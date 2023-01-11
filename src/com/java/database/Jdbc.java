@@ -10,12 +10,13 @@ import java.util.Enumeration;
 import java.util.Scanner;
 
 public class Jdbc {
-	static Connection connection  = null;
+	static Connection connection = null;
 
 	public static void main(String[] args) throws SQLException {
 		connection = connected();
 		retrieveData(connection);
 		updateData(connection);
+		System.out.println(reteriveDataByName(connection));
 	}
 
 	public static Connection connected() {
@@ -61,6 +62,17 @@ public class Jdbc {
 		preparedStatement.executeUpdate();
 		System.out.println("Updated Successfully.....!!!");
 	}
+	
+	 public static Double reteriveDataByName(Connection connection) throws SQLException {
+	        Double salary = null;
+	        PreparedStatement preparedStatement = connection.prepareStatement("select * from employee_payroll where name =?");
+	        preparedStatement.setString(1, "Terisa");
+	        ResultSet resultSet = preparedStatement.executeQuery();
+	        while (resultSet.next()) {
+	            salary = (resultSet.getDouble("salary"));
+	        }
+	        return salary;
+	    }
 
 	public static void listDrivers() {
 		Enumeration<java.sql.Driver> driverList = DriverManager.getDrivers();
